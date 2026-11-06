@@ -1,0 +1,9 @@
+build/
+dist/
+*.private.*
+*ACCESS*
+*.key
+*.log
+__pycache__/
+
+*-log.txt

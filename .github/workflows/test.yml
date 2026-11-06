@@ -1,0 +1,21 @@
+name: Tests (no hardware writes)
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22.x'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: GO111MODULE=off go test manager.go manager_test.go
+      - run: GO111MODULE=off go vet manager.go
+      - run: node --check native-manager.js && node --check encrypt_payload.js
+      - run: node test_native_manager.js
+      - run: sh -n install.sh && sh -n manager.sh
+      - run: python3 build_manager_plugin.py
